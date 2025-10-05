@@ -8,14 +8,15 @@ import ExportPanel from './components/ExportPanel.jsx';
 import { problems, getTagOptions, getCategoryOptions } from './problems/index.js';
 import { runTests } from './lib/testRunner.js';
 
-const STORAGE_KEY = 'js-garden-code-map';
+const STORAGE_KEY_CODE = 'js-garden-code-map';
+const STORAGE_KEY_SOLVED = 'js-garden-solved-set';
 const DIFFICULTY_ORDER = { Easy: 0, Medium: 1, Hard: 2 };
 
 function useCodeStorage(initialMap) {
   const [codeMap, setCodeMap] = useState(() => {
     if (typeof window === 'undefined') return initialMap;
     try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
+      const stored = window.localStorage.getItem(STORAGE_KEY_CODE);
       if (!stored) return initialMap;
       const parsed = JSON.parse(stored);
       return { ...initialMap, ...parsed };
@@ -28,13 +29,41 @@ function useCodeStorage(initialMap) {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(codeMap));
+      window.localStorage.setItem(STORAGE_KEY_CODE, JSON.stringify(codeMap));
     } catch (error) {
       console.warn('コードを保存できませんでした', error);
     }
   }, [codeMap]);
 
   return [codeMap, setCodeMap];
+}
+
+function useSolvedStorage(initialSolved) {
+  const [solvedSet, setSolvedSet] = useState(() => {
+    const fallback = initialSolved instanceof Set ? new Set(initialSolved) : new Set();
+    if (typeof window === 'undefined') return fallback;
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY_SOLVED);
+      if (!stored) return fallback;
+      const parsed = JSON.parse(stored);
+      if (!Array.isArray(parsed)) return fallback;
+      return new Set(parsed);
+    } catch (error) {
+      console.warn('解答状況を読み込めませんでした', error);
+      return fallback;
+    }
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(STORAGE_KEY_SOLVED, JSON.stringify(Array.from(solvedSet)));
+    } catch (error) {
+      console.warn('解答状況を保存できませんでした', error);
+    }
+  }, [solvedSet]);
+
+  return [solvedSet, setSolvedSet];
 }
 
 export default function App() {
@@ -93,6 +122,7 @@ export default function App() {
   }, []);
   const [codeMap, setCodeMap] = useCodeStorage(initialCodeMap);
   const [resultMap, setResultMap] = useState({});
+  const [persistedSolved, setPersistedSolved] = useSolvedStorage(new Set());
   const [running, setRunning] = useState(false);
 
   const filteredProblems = useMemo(() => {
@@ -153,14 +183,16 @@ export default function App() {
   const currentCode = currentProblem ? codeMap[selectedId] ?? currentProblem.starterCode : '';
   const currentResult = currentProblem ? resultMap[selectedId] ?? null : null;
   const solvedIds = useMemo(() => {
-    const solved = new Set();
+    const solved = new Set(persistedSolved instanceof Set ? persistedSolved : []);
     for (const [problemId, result] of Object.entries(resultMap)) {
       if (result && result.summary && result.summary.status === 'pass') {
         solved.add(problemId);
+      } else if (result && result.summary && result.summary.status !== 'pass') {
+        solved.delete(problemId);
       }
     }
     return solved;
-  }, [resultMap]);
+  }, [persistedSolved, resultMap]);
   const totalProblems = problems.length;
 
   const handleCodeChange = (value) => {
@@ -185,6 +217,12 @@ export default function App() {
     const restored = currentProblem.starterCode;
     setCodeMap({ ...codeMap, [currentProblem.id]: restored });
     setResultMap({ ...resultMap, [currentProblem.id]: null });
+    setPersistedSolved((previous) => {
+      if (!previous || !previous.has(currentProblem.id)) return previous;
+      const next = new Set(previous);
+      next.delete(currentProblem.id);
+      return next;
+    });
   };
 
   const handleRun = async () => {
@@ -193,6 +231,15 @@ export default function App() {
     await new Promise((resolve) => setTimeout(resolve, 30));
     const outcome = runTests(currentProblem, currentCode);
     setResultMap({ ...resultMap, [currentProblem.id]: outcome });
+    setPersistedSolved((previous) => {
+      const next = new Set(previous || []);
+      if (outcome && outcome.summary && outcome.summary.status === 'pass') {
+        next.add(currentProblem.id);
+      } else {
+        next.delete(currentProblem.id);
+      }
+      return next;
+    });
     setRunning(false);
   };
 
