@@ -484,6 +484,25 @@ const stringProblems = [
     ],
   },
   {
+    id: 'sort-characters',
+    title: '文字を辞書順で並べ替え',
+    summary: '文字列の文字を昇順に整列して返します。',
+    difficulty: 'Easy',
+    tags: ['string', 'sorting'],
+    functionName: 'sortCharacters',
+    prompt: prompt([
+      '文字列 `input` に含まれる各文字を UTF-16 のコード順に昇順ソートした結果を返してください。',
+      '空文字の場合はそのまま空文字を返します。',
+    ]),
+    starterCode: starter('sortCharacters(input)', '文字列内の文字を辞書順に並べ替える'),
+    constraints: ['入力の長さは 0 〜 10^5'],
+    tests: [
+      { description: '基本ケース', args: ['garden'], expected: 'adegnr' },
+      { description: '大文字と小文字を含む', args: ['JavaScript'], expected: 'JSaaciprtv' },
+      { description: '空文字', args: [''], expected: '' },
+    ],
+  },
+  {
     id: 'find-longest-word',
     title: '最も長い単語を取得',
     summary: '最長の単語を 1 つ取り出します。',
