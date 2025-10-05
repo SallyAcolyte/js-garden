@@ -11,7 +11,10 @@ function buildMarkdown(problem, code, result) {
   if (!problem) return '';
 
   const lines = [];
-  lines.push('# JS Garden Submission');
+  lines.push('# レビュー依頼');
+  lines.push('あなたはプロの JavaScript コードレビュワーです。以下の情報を読み、学習者の解答を評価してください。');
+  lines.push('改善点があれば **具体的な指摘と修正例** を提示し、問題なく合格と判断する場合はその根拠を明記してください。');
+  lines.push('必ず以下の観点をカバーしてください: 正しさ、パフォーマンス、可読性、拡張性、追加テスト案。');
   lines.push('');
   lines.push('## 問題概要');
   lines.push(`- ID: ${problem.id}`);
@@ -83,6 +86,12 @@ function buildMarkdown(problem, code, result) {
     });
   }
 
+  lines.push('---');
+  lines.push('### 出力テンプレート');
+  lines.push('1. **総合評価**: 合格/保留/不合格 + 理由の要約');
+  lines.push('2. **指摘事項**: 箇条書きで具体的な改善点とサンプルコード');
+  lines.push('3. **追加テスト案**: 必要なケース (なければ「追加テスト案: なし」)');
+  lines.push('');
   return lines.join('\n').trimEnd();
 }
 
