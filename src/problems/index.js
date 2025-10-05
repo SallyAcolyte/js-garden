@@ -309,7 +309,7 @@ const stringProblems = [
     tests: [
       { description: '基本ケース', args: ['aaabbc'], expected: 'a3b2c' },
       { description: '単独文字', args: ['abcd'], expected: 'abcd' },
-      { description: '数字を含む', args: ['112233'], expected: '121213' },
+      { description: '数字を含む', args: ['112233'], expected: '122232' },
     ],
   },
   {
