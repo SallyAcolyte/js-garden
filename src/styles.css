@@ -514,6 +514,7 @@ input {
 
 .editor-card .cm-editor .cm-scroller {
   font-family: 'Cascadia Code', 'Fira Code', 'Menlo', monospace;
+  font-variant-ligatures: none;
   background-color: #0f172a;
   color: #e2e8f0;
 }
