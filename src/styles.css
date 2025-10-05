@@ -290,6 +290,13 @@ input {
   max-height: none;
 }
 
+.problem-detail.empty h2 {
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+  color: #0f172a;
+}
+
 .problem-detail.empty img {
   max-width: min(520px, 80%);
   width: 100%;
@@ -303,14 +310,14 @@ input {
 }
 
 .service-disclaimer {
-  margin-top: 1.25rem;
-  padding: 0.9rem 1rem;
-  border-radius: 0.85rem;
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
   background: rgba(14, 116, 144, 0.1);
-  border: 1px solid rgba(45, 212, 191, 0.35);
+  border: 1px solid rgba(45, 212, 191, 0.5);
   color: #0f172a;
   font-size: 0.9rem;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .service-disclaimer p {

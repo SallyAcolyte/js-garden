@@ -7,11 +7,11 @@ export default function ProblemDetail({ problem }) {
       <section className="problem-detail empty">
         <img src={heroImage} alt="JS Garden" />
         <div className="problem-body">
-          <p>ようこそ JS Garden へ。文字列処理を中心としたアルゴリズム問題で、実践的にコーディング力を磨けます。</p>
-          <p>サイドバーから気になる問題を選んで、右側のエディタでコードを書き、テストを実行してみましょう。</p>
+          <h2>JS Garden にようこそ</h2>
+          <p>文字列アルゴリズムに特化した JavaScript 練習場です。課題を選び、右側のエディタで解答を書いてテストを走らせましょう。</p>
           <div className="service-disclaimer">
-            <p>このサービスは Codex による Vibe Coding で開発されています。個人・商用問わず自由に利用できますが、いかなる保証も提供していません。</p>
-            <p>機能や提供内容は予告なく変更または終了となる場合があります。最新情報はリポジトリの更新履歴を確認してください。</p>
+            <p><strong>JS Garden</strong> は Codex の Vibe Coding プログラムで制作されています。個人・商用を問わず無料でご利用いただけますが、動作保証は提供していません。</p>
+            <p>機能は予告なく変更・終了することがあります。最新状況はリポジトリの更新履歴をご確認ください。</p>
           </div>
         </div>
       </section>
