@@ -8,7 +8,7 @@ export default function ProblemDetail({ problem }) {
         <img src={heroImage} alt="JS Garden" />
         <div className="problem-body">
           <h2>JS Garden にようこそ</h2>
-          <p>文字列アルゴリズムに特化した JavaScript 練習場です。課題を選び、右側のエディタで解答を書いてテストを走らせましょう。</p>
+          <p>コーディングテスト対策向けの JavaScript 練習場です。課題を選び、右側のエディタで解答を書いてテストを走らせましょう。</p>
           <div className="service-disclaimer">
             <p><strong>JS Garden</strong> は Codex の Vibe Coding プログラムで制作されています。個人・商用を問わず無料でご利用いただけますが、動作保証は提供していません。</p>
             <p>機能は予告なく変更・終了することがあります。最新状況はリポジトリの更新履歴をご確認ください。</p>
