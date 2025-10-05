@@ -417,11 +417,6 @@ input {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  min-height: 0;
-}
-
-.result-stack>* {
-  min-height: 0;
 }
 
 .editor-card,
