@@ -120,23 +120,26 @@ input {
   color: #94a3b8;
 }
 
-.chip-row {
+.chip-collection.row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
 }
 
-.chip-row.scrollable {
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  padding-bottom: 0.25rem;
+.chip-collection.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.45rem;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 0.3rem;
 }
 
-.chip-row.scrollable::-webkit-scrollbar {
-  height: 6px;
+.chip-collection.grid::-webkit-scrollbar {
+  width: 6px;
 }
 
-.chip-row.scrollable::-webkit-scrollbar-thumb {
+.chip-collection.grid::-webkit-scrollbar-thumb {
   background: rgba(148, 163, 184, 0.35);
   border-radius: 999px;
 }
@@ -147,8 +150,13 @@ input {
   border-radius: 999px;
   color: #e2e8f0;
   font-size: 0.78rem;
-  padding: 0.35rem 0.75rem;
+  padding: 0.4rem 0.95rem;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .chip-button:hover,

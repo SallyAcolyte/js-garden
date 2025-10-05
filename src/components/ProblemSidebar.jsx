@@ -23,11 +23,12 @@ function ChipButton({ active, children, onClick }) {
   );
 }
 
-function FilterGroup({ label, options, value, onChange, scrollable = false }) {
+function FilterGroup({ label, options, value, onChange, layout = 'row' }) {
+  const wrapperClass = layout === 'grid' ? 'chip-collection grid' : 'chip-collection row';
   return (
     <div className="filter-group">
       <span className="filter-label">{label}</span>
-      <div className={'chip-row' + (scrollable ? ' scrollable' : '')}>
+      <div className={wrapperClass}>
         {options.map((option) => (
           <ChipButton key={option.value} active={value === option.value} onClick={() => onChange(option.value)}>
             {option.label}
@@ -106,14 +107,14 @@ export default function ProblemSidebar({
           onChange={handleQueryChange}
         />
         <FilterGroup label="難易度" options={difficultyOptions} value={filters.difficulty} onChange={(value) => handleFilterChange('difficulty', value)} />
-        <FilterGroup label="カテゴリ" options={categoryChips} value={filters.category} onChange={(value) => handleFilterChange('category', value)} scrollable />
-        <FilterGroup label="タグ" options={tagChips} value={filters.tag} onChange={(value) => handleFilterChange('tag', value)} scrollable />
+        <FilterGroup label="カテゴリ" options={categoryChips} value={filters.category} onChange={(value) => handleFilterChange('category', value)} layout="grid" />
+        <FilterGroup label="タグ" options={tagChips} value={filters.tag} onChange={(value) => handleFilterChange('tag', value)} layout="grid" />
       </div>
 
       <div className="problem-scroll">
         <div className="sort-control">
           <span className="filter-label">並び替え</span>
-          <div className="chip-row scrollable">
+          <div className="chip-collection row">
             {sortOptions.map((option) => (
               <ChipButton key={option.value} active={filters.sort === option.value} onClick={() => handleSortChange(option.value)}>
                 {option.label}
