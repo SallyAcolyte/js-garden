@@ -57,6 +57,8 @@ input {
   flex-direction: column;
   gap: 1rem;
   border-right: 1px solid rgba(148, 163, 184, 0.3);
+  height: 100%;
+  min-height: 0;
 }
 
 .sidebar-header {
