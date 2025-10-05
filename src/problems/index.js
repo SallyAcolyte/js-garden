@@ -216,7 +216,7 @@ const stringProblems = [
       '日本語などの非英字はそのまま残します。',
     ]),
     starterCode: starter('removeVowels(input)', '母音を除外した文字列を返す'),
-    constraints: ['入力の長さは 0 〜 10^5'],
+    constraints: ['入力は数百文字までの短文を想定', 'マルチバイト文字の分割は意識しなくて構いません'],
     tests: [
       { description: '単純なケース', args: ['hello'], expected: 'hll' },
       { description: '大文字を含む', args: ['AIUEO'], expected: '' },
@@ -292,7 +292,7 @@ const stringProblems = [
       '非英字はそのまま残します。',
     ]),
     starterCode: starter('swapCase(input)', '英字の大文字小文字を入れ替える'),
-    constraints: ['入力の長さは 0 〜 10^5'],
+    constraints: ['対象は半角英数字と記号が中心の文字列を想定', '全角やサロゲートの扱いは考慮不要'],
     tests: [
       { description: '英字のみ', args: ['AbC'], expected: 'aBc' },
       { description: '混在', args: ['Hello, 世界'], expected: 'hELLO, 世界' },
@@ -444,7 +444,7 @@ const stringProblems = [
       '単語は空白で区切られ、余分な空白は無視します。',
     ]),
     starterCode: starter('countWords(input)', '空白区切りの単語数を数える'),
-    constraints: ['入力の長さは 0 〜 10^5'],
+    constraints: ['入力は数百文字までの短い文章を想定', '日本語などのマルチバイト文字は登場しないと仮定して良い'],
     tests: [
       { description: '基本ケース', args: ['the quick brown fox'], expected: 4 },
       { description: '余分な空白を無視', args: ['  hello   world  '], expected: 2 },
@@ -463,7 +463,7 @@ const stringProblems = [
       '英字や記号などその他の文字はそのまま保持します。',
     ]),
     starterCode: starter('removeDigits(input)', '数字を取り除いた文字列を返す'),
-    constraints: ['入力の長さは 0 〜 10^5'],
+    constraints: ['入力は半角英数と記号が中心の短文を想定', '全角数字やマルチバイト文字は出現しないものとします'],
     tests: [
       { description: '数字と文字が混在', args: ['abc123'], expected: 'abc' },
       { description: '数字のみの文字列', args: ['2023'], expected: '' },
@@ -482,7 +482,7 @@ const stringProblems = [
       'その他の文字は変更しません。',
     ]),
     starterCode: starter('maskVowels(input)', '母音を * に置き換えて返す'),
-    constraints: ['入力の長さは 0 〜 10^5'],
+    constraints: ['入力は英単語ベースの短い文字列を想定', '母音の判定対象は半角英字のみで問題ありません'],
     tests: [
       { description: '小文字の母音', args: ['hello'], expected: 'h*ll*' },
       { description: '大文字を含む', args: ['JAVASCRIPT'], expected: 'J*V*SCR*PT' },
@@ -501,7 +501,7 @@ const stringProblems = [
       '空文字の場合はそのまま空文字を返します。',
     ]),
     starterCode: starter('sortCharacters(input)', '文字列内の文字を辞書順に並べ替える'),
-    constraints: ['入力の長さは 0 〜 10^5'],
+    constraints: ['入力は ASCII 中心の短い文字列を想定', 'ロケール依存の並び替えは考慮しなくて構いません'],
     tests: [
       { description: '基本ケース', args: ['garden'], expected: 'adegnr' },
       { description: '大文字と小文字を含む', args: ['JavaScript'], expected: 'JSaaciprtv' },
@@ -520,7 +520,7 @@ const stringProblems = [
       '複数候補がある場合は最初に現れたものを返し、単語が無ければ空文字を返します。',
     ]),
     starterCode: starter('findLongestWord(input)', '最も長い単語を 1 つ返す'),
-    constraints: ['入力の長さは 0 〜 10^5'],
+    constraints: ['入力は短い英文を想定', '単語の区切りは半角スペースのみを考えれば十分です'],
     tests: [
       { description: '基本ケース', args: ['The quick brown fox'], expected: 'quick' },
       { description: '同じ長さの単語', args: ['jumped over lazy dogs'], expected: 'jumped' },
@@ -539,7 +539,7 @@ const stringProblems = [
       '該当しない場合は `input` をそのまま返します。',
     ]),
     starterCode: starter('stripPrefix(input, prefix)', '先頭の指定文字列を取り除く'),
-    constraints: ['prefix の長さは 0 〜 10^4'],
+    constraints: ['prefix は ASCII 文字列で数十文字以内を想定', '大文字小文字の規則は与えられたまま扱って構いません'],
     tests: [
       { description: 'プレフィックスが一致', args: ['unhappy', 'un'], expected: 'happy' },
       { description: '繰り返しにはならない', args: ['redo', 're'], expected: 'do' },
@@ -558,7 +558,7 @@ const stringProblems = [
       '該当しない場合は `input` をそのまま返します。',
     ]),
     starterCode: starter('stripSuffix(input, suffix)', '末尾の指定文字列を取り除く'),
-    constraints: ['suffix の長さは 0 〜 10^4'],
+    constraints: ['suffix は ASCII 文字列で数十文字以内を想定', '文字幅の違いは気にする必要はありません'],
     tests: [
       { description: 'サフィックスが一致', args: ['readme.md', '.md'], expected: 'readme' },
       { description: '別の末尾', args: ['holiday', 'day'], expected: 'holi' },
@@ -577,7 +577,7 @@ const stringProblems = [
       '`target` は空文字列ではないとします。',
     ]),
     starterCode: starter('countSubstring(input, target)', '重ならないように部分文字列の出現数を数える'),
-    constraints: ['target の長さは 1 〜 10^4', '入力の長さは 0 〜 10^5'],
+    constraints: ['入力・target ともに数百文字までの ASCII テキストを想定', '部分文字列の比較で大文字小文字の正規化は行わなくて構いません'],
     tests: [
       { description: '複数回出現', args: ['hello hello', 'lo'], expected: 2 },
       { description: '重なりは数えない', args: ['aaaa', 'aa'], expected: 2 },
@@ -596,7 +596,7 @@ const stringProblems = [
       '入力が空の場合は空文字を返します。',
     ]),
     starterCode: starter('joinCharactersWith(input, separator)', '各文字の間に区切りを挟んで結合する'),
-    constraints: ['separator の長さは 0 〜 10^3', '入力の長さは 0 〜 10^5'],
+    constraints: ['separator は短い文字列を想定 (例: 記号 1〜2 文字)', '入力は ASCII 中心のテキストでマルチバイトは考慮不要'],
     tests: [
       { description: '基本ケース', args: ['abc', '-'], expected: 'a-b-c' },
       { description: '区切りが空文字', args: ['abc', ''], expected: 'abc' },
@@ -615,7 +615,7 @@ const stringProblems = [
       '入力が空の場合は空文字を返します。',
     ]),
     starterCode: starter('middleCharacter(input)', '中央の文字または 2 文字を返す'),
-    constraints: ['入力の長さは 0 〜 10^5'],
+    constraints: ['入力は短い英文程度を想定', 'サロゲートペアなどの特殊ケースは考えなくて構いません'],
     tests: [
       { description: '奇数長の文字列', args: ['guide'], expected: 'i' },
       { description: '偶数長の文字列', args: ['test'], expected: 'es' },
@@ -634,7 +634,7 @@ const stringProblems = [
       '母音が存在しない場合は空文字を返します。',
     ]),
     starterCode: starter('extractVowels(input)', '母音だけを集めて返す'),
-    constraints: ['入力の長さは 0 〜 10^5'],
+    constraints: ['入力は英字ベースの短い文字列を想定', '母音の定義にマルチバイト文字は含まないものとします'],
     tests: [
       { description: '小文字のみ', args: ['hello world'], expected: 'eoo' },
       { description: '大文字を含む', args: ['JAVASCRIPT'], expected: 'AAI' },
@@ -653,7 +653,7 @@ const stringProblems = [
       'パラメータが存在しなければ null を返し、値が空の場合は空文字を返します。',
     ]),
     starterCode: starter('extractQueryValue(path, target)', 'クエリ文字列から指定パラメータの値を取得する'),
-    constraints: ['path の長さは 0 〜 10^5', 'パラメータ名と値は URL デコード済みとみなす'],
+    constraints: ['想定する URL は 1 行の短い ASCII 文字列', 'パラメータ名と値は既に URL デコード済みとみなして良い'],
     tests: [
       { description: '基本ケース', args: ['/search?q=js&lang=ja', 'lang'], expected: 'ja' },
       { description: '存在しないパラメータ', args: ['/items?page=2', 'q'], expected: null },
@@ -672,7 +672,7 @@ const stringProblems = [
       '空のパス、先頭末尾のスラッシュは無視し、セグメントが存在しなければ空文字を返します。',
     ]),
     starterCode: starter('formatBreadcrumb(path)', 'パスをパンくずリストに変換する'),
-    constraints: ['path の長さは 0 〜 10^5'],
+    constraints: ['パスは数セグメントからなる短い ASCII 文字列を想定', 'IDN やエンコード済み文字列は考慮しなくて構いません'],
     tests: [
       { description: '基本ケース', args: ['/products/electronics/phones'], expected: 'Products > Electronics > Phones' },
       { description: '先頭末尾スラッシュを無視', args: ['//blog//2024//'], expected: 'Blog > 2024' },
@@ -691,7 +691,7 @@ const stringProblems = [
       'ユーザー名が 1 文字以下の場合はそのまま返します。',
     ]),
     starterCode: starter('maskEmailAddress(input)', 'メールアドレスの一部をマスクする'),
-    constraints: ['入力は `@` を 1 つ含むメールアドレス形式とする'],
+    constraints: ['入力は `@` を 1 つ含む標準的なメールアドレスとする', 'ユーザー名・ドメインともに ASCII 文字で構成されると仮定して良い'],
     tests: [
       { description: '基本ケース', args: ['user@example.com'], expected: 'u***@example.com' },
       { description: '短いユーザー名', args: ['a@sample.io'], expected: 'a@sample.io' },
@@ -710,7 +710,7 @@ const stringProblems = [
       'セミコロン区切りで分割し、各ペアのキーと値は前後の空白を取り除きます。値が省略されている場合は空文字列を設定し、無効なペアは無視してください。',
     ]),
     starterCode: starter('parseCookieHeader(cookieHeader)', 'Cookie ヘッダー文字列をオブジェクトに変換する'),
-    constraints: ['cookieHeader の長さは 0 〜 10^5'],
+    constraints: ['Cookie ヘッダーは 1 行の短い ASCII 文字列を想定', 'Expires などの属性は出現しないものとします'],
     tests: [
       { description: '基本ケース', args: ['locale=ja; theme=dark'], expected: { locale: 'ja', theme: 'dark' } },
       { description: '空白や空値の扱い', args: ['session=abc123; foo=;  ; flag=on'], expected: { session: 'abc123', foo: '', flag: 'on' } },
@@ -729,7 +729,7 @@ const stringProblems = [
       '`updates` の値が文字列ならその値で上書きし、null の場合は該当キーを削除します。クエリが空になったときは `?` を付けずに `path` を返し、出力するクエリキーは辞書順に並べてください。',
     ]),
     starterCode: starter('mergeQueryParams(path, updates)', 'クエリパラメータをマージして返す'),
-    constraints: ['path の長さは 0 〜 10^5', 'updates の値は文字列または null'],
+    constraints: ['扱う URL は 1 行の ASCII 文字列を想定', 'updates の値は文字列または null のみ (ネスト構造は考慮不要)'],
     tests: [
       { description: '値の更新と追加', args: ['/search?q=js&lang=ja', { lang: 'en', page: '2' }], expected: '/search?lang=en&page=2&q=js' },
       { description: '既存キーの削除', args: ['/items?filter=onsale&sort=price', { filter: null }], expected: '/items?sort=price' },
