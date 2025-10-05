@@ -99,19 +99,22 @@ export default function ProblemSidebar({
         <div className="sidebar-progress">解いた問題 {solvedCount} / {total}</div>
       </header>
 
-      <div className="sidebar-controls">
+      <div className="sidebar-search">
         <input
           type="search"
           placeholder="問題を検索..."
           value={filters.query}
           onChange={handleQueryChange}
         />
-        <FilterGroup label="難易度" options={difficultyOptions} value={filters.difficulty} onChange={(value) => handleFilterChange('difficulty', value)} />
-        <FilterGroup label="カテゴリ" options={categoryChips} value={filters.category} onChange={(value) => handleFilterChange('category', value)} layout="grid" />
-        <FilterGroup label="タグ" options={tagChips} value={filters.tag} onChange={(value) => handleFilterChange('tag', value)} layout="grid" />
       </div>
 
-      <div className="problem-scroll">
+      <div className="sidebar-content">
+        <div className="sidebar-controls">
+          <FilterGroup label="難易度" options={difficultyOptions} value={filters.difficulty} onChange={(value) => handleFilterChange('difficulty', value)} />
+          <FilterGroup label="カテゴリ" options={categoryChips} value={filters.category} onChange={(value) => handleFilterChange('category', value)} layout="grid" />
+          <FilterGroup label="タグ" options={tagChips} value={filters.tag} onChange={(value) => handleFilterChange('tag', value)} layout="grid" />
+        </div>
+
         <div className="sort-control">
           <span className="filter-label">並び替え</span>
           <div className="chip-collection row">
