@@ -98,24 +98,6 @@ input {
   gap: 0.85rem;
 }
 
-.sidebar-announcement {
-  font-size: 0.74rem;
-  line-height: 1.5;
-  color: #cbd5f5;
-  background: rgba(15, 118, 110, 0.25);
-  border: 1px solid rgba(45, 212, 191, 0.35);
-  border-radius: 0.75rem;
-  padding: 0.75rem;
-}
-
-.sidebar-announcement p {
-  margin: 0 0 0.4rem;
-}
-
-.sidebar-announcement p:last-child {
-  margin-bottom: 0;
-}
-
 .sidebar input {
   width: 100%;
   padding: 0.5rem 0.65rem;
@@ -318,6 +300,25 @@ input {
 
 .problem-detail.empty .problem-body {
   max-width: 600px;
+}
+
+.service-disclaimer {
+  margin-top: 1.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.85rem;
+  background: rgba(14, 116, 144, 0.1);
+  border: 1px solid rgba(45, 212, 191, 0.35);
+  color: #0f172a;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.service-disclaimer p {
+  margin: 0 0 0.5rem;
+}
+
+.service-disclaimer p:last-child {
+  margin-bottom: 0;
 }
 
 .problem-detail h2 {

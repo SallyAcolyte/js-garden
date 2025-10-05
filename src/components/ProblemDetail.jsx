@@ -9,6 +9,10 @@ export default function ProblemDetail({ problem }) {
         <div className="problem-body">
           <p>ようこそ JS Garden へ。文字列処理を中心としたアルゴリズム問題で、実践的にコーディング力を磨けます。</p>
           <p>サイドバーから気になる問題を選んで、右側のエディタでコードを書き、テストを実行してみましょう。</p>
+          <div className="service-disclaimer">
+            <p>このサービスは Codex による Vibe Coding で開発されています。個人・商用問わず自由に利用できますが、いかなる保証も提供していません。</p>
+            <p>機能や提供内容は予告なく変更または終了となる場合があります。最新情報はリポジトリの更新履歴を確認してください。</p>
+          </div>
         </div>
       </section>
     );

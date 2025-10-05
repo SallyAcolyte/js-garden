@@ -100,10 +100,6 @@ export default function ProblemSidebar({
       </header>
 
       <div className="sidebar-controls">
-        <div className="sidebar-announcement">
-          <p>このサービスは Codex による Vibe Coding で開発されました。個人・商用問わず自由に利用できますが、いかなる保証もありません。</p>
-          <p>提供内容は予告なく変更・終了される場合があります。</p>
-        </div>
         <input
           type="search"
           placeholder="問題を検索..."
