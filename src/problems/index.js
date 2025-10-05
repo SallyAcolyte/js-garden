@@ -6,6 +6,7 @@ const PARAMETER_GUARDS = {
   suffix: 'string',
   target: 'string',
   separator: 'string',
+  cookieHeader: 'string',
   words: 'array',
   values: 'array',
   items: 'array',
@@ -19,6 +20,7 @@ const PARAMETER_GUARDS = {
   object: 'object',
   settings: 'object',
   defaults: 'object',
+  updates: 'object',
 };
 
 const GUARD_TEMPLATES = {
@@ -694,6 +696,45 @@ const stringProblems = [
       { description: '基本ケース', args: ['user@example.com'], expected: 'u***@example.com' },
       { description: '短いユーザー名', args: ['a@sample.io'], expected: 'a@sample.io' },
       { description: '長めのユーザー名', args: ['developer.portal@company.dev'], expected: 'd*****************@company.dev' },
+    ],
+  },
+  {
+    id: 'parse-cookie-header',
+    title: 'Cookie ヘッダーのパース',
+    summary: 'Cookie ヘッダー文字列をオブジェクトに変換します。',
+    difficulty: 'Medium',
+    tags: ['string', 'web', 'parsing'],
+    functionName: 'parseCookieHeader',
+    prompt: prompt([
+      'HTTP の Cookie ヘッダー文字列 `cookieHeader` を受け取り、`name=value` のペアをオブジェクトに変換して返してください。',
+      'セミコロン区切りで分割し、各ペアのキーと値は前後の空白を取り除きます。値が省略されている場合は空文字列を設定し、無効なペアは無視してください。',
+    ]),
+    starterCode: starter('parseCookieHeader(cookieHeader)', 'Cookie ヘッダー文字列をオブジェクトに変換する'),
+    constraints: ['cookieHeader の長さは 0 〜 10^5'],
+    tests: [
+      { description: '基本ケース', args: ['locale=ja; theme=dark'], expected: { locale: 'ja', theme: 'dark' } },
+      { description: '空白や空値の扱い', args: ['session=abc123; foo=;  ; flag=on'], expected: { session: 'abc123', foo: '', flag: 'on' } },
+      { description: '空文字', args: [''], expected: {} },
+    ],
+  },
+  {
+    id: 'merge-query-params',
+    title: 'クエリパラメータのマージ',
+    summary: 'URL のクエリを更新して返します。',
+    difficulty: 'Hard',
+    tags: ['string', 'web'],
+    functionName: 'mergeQueryParams',
+    prompt: prompt([
+      'URL 風の文字列 `path` とオブジェクト `updates` を受け取り、既存のクエリパラメータをマージした新しい文字列を返してください。',
+      '`updates` の値が文字列ならその値で上書きし、null の場合は該当キーを削除します。クエリが空になったときは `?` を付けずに `path` を返し、出力するクエリキーは辞書順に並べてください。',
+    ]),
+    starterCode: starter('mergeQueryParams(path, updates)', 'クエリパラメータをマージして返す'),
+    constraints: ['path の長さは 0 〜 10^5', 'updates の値は文字列または null'],
+    tests: [
+      { description: '値の更新と追加', args: ['/search?q=js&lang=ja', { lang: 'en', page: '2' }], expected: '/search?lang=en&page=2&q=js' },
+      { description: '既存キーの削除', args: ['/items?filter=onsale&sort=price', { filter: null }], expected: '/items?sort=price' },
+      { description: 'クエリが新規作成される', args: ['/profile', { tab: 'settings' }], expected: '/profile?tab=settings' },
+      { description: '全削除でクエリ無し', args: ['/logout?redirect=/home', { redirect: null }], expected: '/logout' },
     ],
   },
   {
