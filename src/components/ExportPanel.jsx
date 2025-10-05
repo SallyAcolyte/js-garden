@@ -90,7 +90,7 @@ function buildMarkdown(problem, code, result) {
   lines.push('### 出力テンプレート');
   lines.push('1. **総合評価**: 合格/保留/不合格 + 理由の要約');
   lines.push('2. **指摘事項**: 箇条書きで具体的な改善点とサンプルコード');
-  lines.push('3. **追加テスト案**: 必要なケース (なければ「追加テスト案: なし」)');
+  lines.push('3. **アドバイス**: 今後の学習に向けた助言');
   lines.push('');
   return lines.join('\n').trimEnd();
 }
