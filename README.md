@@ -22,6 +22,14 @@ npm run dev を実行すると Vite の開発サーバーが起動します。�
 
     npm run preview
 
+### GitHub Pages への公開
+
+1. リポジトリ設定の **Settings → Pages** で "Source" に `GitHub Actions` を選択します。
+2. `main` ブランチに変更をプッシュすると、`.github/workflows/deploy.yml` が自動でビルドし、`dist/` を GitHub Pages にデプロイします。
+3. Actions の完了後、同画面に表示される公開 URL でサイトを確認できます。必要に応じて `workflow_dispatch` で手動再デプロイも可能です。
+
+環境変数や機密情報は不要です。追加の設定をすることなく GitHub Pages (https://<アカウント名>.github.io/<リポジトリ名>/) で公開できます。
+
 ## 構成
 
 - src/problems/index.js
