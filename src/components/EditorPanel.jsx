@@ -2,9 +2,13 @@ import React, { useMemo } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark';
+import { EditorView } from '@codemirror/view';
 
 export default function EditorPanel({ value, onChange, onRun, onReset, running }) {
-  const extensions = useMemo(() => [javascript({ jsx: false, typescript: false })], []);
+  const extensions = useMemo(() => [
+    javascript({ jsx: false, typescript: false }),
+    EditorView.lineWrapping
+  ], []);
 
   return (
     <section className="editor-card">
