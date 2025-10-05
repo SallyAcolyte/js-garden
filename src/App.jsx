@@ -4,6 +4,7 @@ import ProblemDetail from './components/ProblemDetail.jsx';
 import EditorPanel from './components/EditorPanel.jsx';
 import ResultPanel from './components/ResultPanel.jsx';
 import CustomRunPanel from './components/CustomRunPanel.jsx';
+import ExportPanel from './components/ExportPanel.jsx';
 import { problems, getTagOptions, getCategoryOptions } from './problems/index.js';
 import { runTests } from './lib/testRunner.js';
 
@@ -218,6 +219,7 @@ export default function App() {
               <div className="result-stack">
                 <ResultPanel result={currentResult} />
                 <CustomRunPanel problem={currentProblem} code={currentCode} />
+                <ExportPanel problem={currentProblem} code={currentCode} result={currentResult} />
               </div>
             </div>
           ) : (

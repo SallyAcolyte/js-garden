@@ -382,7 +382,8 @@ input {
 
 .editor-card,
 .result-card,
-.run-card {
+.run-card,
+.export-card {
   background: white;
   border-radius: 1rem;
   padding: 1rem;
@@ -392,7 +393,8 @@ input {
   min-height: 0;
 }
 
-.run-card {
+.run-card,
+.export-card {
   gap: 0.65rem;
 }
 
@@ -418,6 +420,38 @@ input {
 .run-card header button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.export-card header button {
+  border: none;
+  border-radius: 0.65rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: #10b981;
+  color: white;
+}
+
+.export-card header button.secondary {
+  background: #10b981;
+}
+
+.export-card header button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.export-preview {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 0.75rem;
+  font-size: 0.8rem;
+  max-height: 320px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .editor-wrapper {
