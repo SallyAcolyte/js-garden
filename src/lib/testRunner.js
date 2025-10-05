@@ -82,9 +82,13 @@ export function runTests(problem, userCode) {
   let passCount = 0;
 
   for (const test of tests) {
-    const resultItem = { description: test.description };
+    const rawArgs = Array.isArray(test.args) ? test.args : [];
+    const resultItem = {
+      description: test.description,
+      args: rawArgs.map((arg) => formatValue(arg)),
+    };
     try {
-      const output = solver.apply(null, test.args);
+      const output = solver.apply(null, rawArgs);
       let passed;
       if (typeof test.assert === 'function') {
         passed = Boolean(test.assert(output));

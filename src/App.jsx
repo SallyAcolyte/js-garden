@@ -8,6 +8,7 @@ import { problems, getTagOptions, getCategoryOptions } from './problems/index.js
 import { runTests } from './lib/testRunner.js';
 
 const STORAGE_KEY = 'js-garden-code-map';
+const DIFFICULTY_ORDER = { Easy: 0, Medium: 1, Hard: 2 };
 
 function useCodeStorage(initialMap) {
   const [codeMap, setCodeMap] = useState(() => {
@@ -38,8 +39,50 @@ function useCodeStorage(initialMap) {
 export default function App() {
   const tagOptions = useMemo(() => getTagOptions(), []);
   const categoryOptions = useMemo(() => getCategoryOptions(), []);
-  const [filters, setFilters] = useState({ query: '', difficulty: 'All', tag: 'All', category: 'All' });
-  const [selectedId, setSelectedId] = useState(null);
+  const problemOrder = useMemo(() => {
+    const map = new Map();
+    problems.forEach((problem, index) => {
+      map.set(problem.id, index);
+    });
+    return map;
+  }, []);
+  const [filters, setFilters] = useState({ query: '', difficulty: 'All', tag: 'All', category: 'All', sort: 'default' });
+  const [selectedId, setSelectedId] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    const hash = window.location.hash.replace(/^#/, '');
+    return problems.some((problem) => problem.id === hash) ? hash : null;
+  });
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const syncFromHash = () => {
+      const raw = window.location.hash.replace(/^#/, '');
+      setSelectedId((current) => {
+        if (raw.length === 0) {
+          return null;
+        }
+        if (!problems.some((item) => item.id === raw)) {
+          return current;
+        }
+        return raw;
+      });
+    };
+    syncFromHash();
+    window.addEventListener('hashchange', syncFromHash);
+    return () => {
+      window.removeEventListener('hashchange', syncFromHash);
+    };
+  }, []);
+
+  const updateLocationHash = (value) => {
+    if (typeof window === 'undefined') return;
+    const base = window.location.pathname + window.location.search;
+    window.history.replaceState(null, '', value ? `${base}#${value}` : base);
+  };
+
+  useEffect(() => {
+    updateLocationHash(selectedId);
+  }, [selectedId]);
+
   const initialCodeMap = useMemo(() => {
     const map = {};
     for (const problem of problems) {
@@ -60,18 +103,64 @@ export default function App() {
       const matchCategory = filters.category === 'All' || problem.category === filters.category;
       return matchText && matchDifficulty && matchTag && matchCategory;
     });
-  }, [filters]);
+  }, [filters.category, filters.difficulty, filters.query, filters.tag]);
+
+  const sortedProblems = useMemo(() => {
+    if (filters.sort === 'default') {
+      return filteredProblems;
+    }
+    const items = [...filteredProblems];
+    if (filters.sort === 'difficulty-asc') {
+      items.sort((a, b) => {
+        const diff = DIFFICULTY_ORDER[a.difficulty] - DIFFICULTY_ORDER[b.difficulty];
+        if (diff !== 0) return diff;
+        return (problemOrder.get(a.id) ?? 0) - (problemOrder.get(b.id) ?? 0);
+      });
+    } else if (filters.sort === 'difficulty-desc') {
+      items.sort((a, b) => {
+        const diff = DIFFICULTY_ORDER[b.difficulty] - DIFFICULTY_ORDER[a.difficulty];
+        if (diff !== 0) return diff;
+        return (problemOrder.get(a.id) ?? 0) - (problemOrder.get(b.id) ?? 0);
+      });
+    } else if (filters.sort === 'title-asc') {
+      items.sort((a, b) => {
+        const diff = a.title.localeCompare(b.title, 'ja');
+        if (diff !== 0) return diff;
+        return (problemOrder.get(a.id) ?? 0) - (problemOrder.get(b.id) ?? 0);
+      });
+    } else if (filters.sort === 'title-desc') {
+      items.sort((a, b) => {
+        const diff = b.title.localeCompare(a.title, 'ja');
+        if (diff !== 0) return diff;
+        return (problemOrder.get(a.id) ?? 0) - (problemOrder.get(b.id) ?? 0);
+      });
+    }
+    return items;
+  }, [filteredProblems, filters.sort, problemOrder]);
 
   useEffect(() => {
-    if (!selectedId || filteredProblems.some((item) => item.id === selectedId)) return;
-    if (filteredProblems.length > 0) {
-      setSelectedId(filteredProblems[0].id);
+    if (!selectedId) return;
+    if (sortedProblems.some((item) => item.id === selectedId)) return;
+    if (sortedProblems.length > 0) {
+      setSelectedId(sortedProblems[0].id);
+    } else {
+      setSelectedId(null);
     }
-  }, [filteredProblems, selectedId]);
+  }, [selectedId, sortedProblems]);
 
   const currentProblem = problems.find((item) => item.id === selectedId) || null;
   const currentCode = currentProblem ? codeMap[selectedId] ?? currentProblem.starterCode : '';
   const currentResult = currentProblem ? resultMap[selectedId] ?? null : null;
+  const solvedIds = useMemo(() => {
+    const solved = new Set();
+    for (const [problemId, result] of Object.entries(resultMap)) {
+      if (result && result.summary && result.summary.status === 'pass') {
+        solved.add(problemId);
+      }
+    }
+    return solved;
+  }, [resultMap]);
+  const totalProblems = problems.length;
 
   const handleCodeChange = (value) => {
     if (!currentProblem) return;
@@ -84,6 +173,10 @@ export default function App() {
 
   const handleFiltersChange = (nextFilters) => {
     setFilters(nextFilters);
+  };
+
+  const handleResetSelection = () => {
+    setSelectedId(null);
   };
 
   const handleReset = () => {
@@ -106,13 +199,16 @@ export default function App() {
     <div className="app">
       <div className="app-shell">
         <ProblemSidebar
-          problems={filteredProblems}
+          problems={sortedProblems}
           selectedId={selectedId}
           filters={filters}
           onFiltersChange={handleFiltersChange}
           onSelect={handleSelect}
+          onResetSelection={handleResetSelection}
           tagOptions={tagOptions}
           categoryOptions={categoryOptions}
+          solvedIds={solvedIds}
+          totalCount={totalProblems}
         />
         <main className="main">
           <ProblemDetail problem={currentProblem} />

@@ -1,8 +1,64 @@
+const PARAMETER_GUARDS = {
+  input: 'string',
+  text: 'string',
+  path: 'string',
+  words: 'array',
+  values: 'array',
+  items: 'array',
+  pairs: 'array',
+  intervals: 'array',
+  matrix: 'array',
+  source: 'array',
+  other: 'array',
+  keys: 'array',
+  mapping: 'object',
+  object: 'object',
+  settings: 'object',
+  defaults: 'object',
+};
+
+const GUARD_TEMPLATES = {
+  string: (name) => [
+    `  if (typeof ${name} !== 'string') {`,
+    `    throw new TypeError('${name} は文字列で受け取ってください');`,
+    '  }',
+    '',
+  ],
+  array: (name) => [
+    `  if (!Array.isArray(${name})) {`,
+    `    throw new TypeError('${name} は配列で受け取ってください');`,
+    '  }',
+    '',
+  ],
+  object: (name) => [
+    `  if (${name} === null || typeof ${name} !== 'object') {`,
+    `    throw new TypeError('${name} はオブジェクトで受け取ってください');`,
+    '  }',
+    '',
+  ],
+};
+
 function starter(signature, comment) {
+  const guardLines = [];
+  const match = signature.match(/^[^(]+\(([^)]*)\)$/);
+  if (match) {
+    const params = match[1]
+      .split(',')
+      .map((param) => param.trim())
+      .filter((param) => param.length > 0);
+    for (const param of params) {
+      const guardType = PARAMETER_GUARDS[param];
+      if (guardType && GUARD_TEMPLATES[guardType]) {
+        guardLines.push(...GUARD_TEMPLATES[guardType](param));
+      }
+    }
+  }
+
   return [
     `function ${signature} {`,
+    ...guardLines,
     `  // TODO: ${comment}`,
-    '  ',
+    '',
     '}',
     '',
   ].join('\n');

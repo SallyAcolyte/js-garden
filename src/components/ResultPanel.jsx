@@ -52,6 +52,7 @@ export default function ResultPanel({ result }) {
         {result.items.map((item, index) => (
           <div key={index} className={'test-result ' + (item.outcome === 'pass' ? 'pass' : item.outcome === 'fail' ? 'fail' : 'error')}>
             <h4>{item.description}</h4>
+            {Array.isArray(item.args) && item.args.length > 0 && <pre>入力: {item.args.join(', ')}</pre>}
             {item.outcome === 'error' ? (
               <>
                 <pre>エラー: {item.error}</pre>
