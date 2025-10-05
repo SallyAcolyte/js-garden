@@ -79,14 +79,14 @@ function createProblem(category, definition) {
   const { promptLines, signature, comment, samples, solution, ...rest } = definition;
   const tests = Array.isArray(samples)
     ? samples.map((sample, index) => {
-        const cloneArgs = sample.args.map((arg) => clone(arg));
-        const expected = solution ? solution(...cloneArgs) : sample.expected;
-        return {
-          description: sample.description || 'ケース ' + (index + 1),
-          args: sample.args,
-          expected,
-        };
-      })
+      const cloneArgs = sample.args.map((arg) => clone(arg));
+      const expected = solution ? solution(...cloneArgs) : sample.expected;
+      return {
+        description: sample.description || 'ケース ' + (index + 1),
+        args: sample.args,
+        expected,
+      };
+    })
     : definition.tests;
 
   return {
@@ -614,6 +614,63 @@ const stringProblems = [
       { description: '英文字', args: ['ABC'], expected: [65, 66, 67] },
       { description: '数字混在', args: ['A1'], expected: [65, 49] },
       { description: '空文字', args: [''], expected: [] },
+    ],
+  },
+  {
+    id: 'string-min-window-cover',
+    title: '最短カバーサブストリング',
+    summary: 'target の全ての文字を含む最短の部分文字列を探します。',
+    difficulty: 'Hard',
+    tags: ['string', 'sliding-window'],
+    functionName: 'minWindowSubstring',
+    prompt: prompt([
+      '文字列 `text` の中から、`target` に含まれる全ての文字を必要回数そろえて含む最短の部分文字列を求めてください。',
+      '条件を満たす部分文字列が存在しない場合は空文字列を返します。',
+    ]),
+    starterCode: starter('minWindowSubstring(text, target)', 'target をすべて含む最短部分文字列を返す'),
+    constraints: ['text の長さは 0 〜 10^5', 'target の長さは 1 〜 10^4'],
+    tests: [
+      { description: '典型ケース', args: ['ADOBECODEBANC', 'ABC'], expected: 'BANC' },
+      { description: '重複する文字が必要', args: ['aa', 'aa'], expected: 'aa' },
+      { description: '対象が含まれない', args: ['hello', 'xyz'], expected: '' },
+    ],
+  },
+  {
+    id: 'string-min-palindrome-cuts',
+    title: '最小回文分割数',
+    summary: '文字列を回文に分割するときの最小カット数を求めます。',
+    difficulty: 'Hard',
+    tags: ['string', 'dynamic-programming', 'palindrome'],
+    functionName: 'minPalindromeCuts',
+    prompt: prompt([
+      '文字列 `text` を 1 つ以上の連続した回文部分文字列に分割する際の最小カット数を求めてください。',
+      'すでに回文である場合は 0 を返し、空文字列の場合も 0 とします。',
+    ]),
+    starterCode: starter('minPalindromeCuts(text)', '文字列を回文分割するときの最小カット数を求める'),
+    constraints: ['text の長さは 0 〜 10^3'],
+    tests: [
+      { description: '回文にまとまる', args: ['aab'], expected: 1 },
+      { description: '既に回文', args: ['racecar'], expected: 0 },
+      { description: '複数回の分割が必要', args: ['abccbc'], expected: 2 },
+    ],
+  },
+  {
+    id: 'string-minimal-rotation',
+    title: '辞書順最小回転',
+    summary: '円環文字列として辞書順が最小になる回転を求めます。',
+    difficulty: 'Hard',
+    tags: ['string', 'lexicographical'],
+    functionName: 'minimalRotation',
+    prompt: prompt([
+      '文字列 `input` を円環とみなし、文字列を回転させることで得られる候補のうち辞書順が最小のものを返してください。',
+      '空文字列の場合は空文字列を返し、同値の回転が複数ある場合は最初に現れるものを返します。',
+    ]),
+    starterCode: starter('minimalRotation(input)', '辞書順が最小になるように回転した文字列を返す'),
+    constraints: ['input の長さは 0 〜 10^5'],
+    tests: [
+      { description: '基本ケース', args: ['baca'], expected: 'abac' },
+      { description: '同一文字が多い', args: ['zzza'], expected: 'azzz' },
+      { description: '長めの単語', args: ['cabbage'], expected: 'abbagec' },
     ],
   },
 ];
