@@ -29,6 +29,7 @@ npm run dev を実行すると Vite の開発サーバーが起動します。�
 3. Actions の完了後、同画面に表示される公開 URL でサイトを確認できます。必要に応じて `workflow_dispatch` で手動再デプロイも可能です。
 
 環境変数や機密情報は不要です。追加の設定をすることなく GitHub Pages (https://<アカウント名>.github.io/<リポジトリ名>/) で公開できます。
+OGP 用のメタタグおよび `public/og-image.png` を同梱しているため、GitHub Pages にデプロイすると共有時のプレビューも自動で整います。
 
 ## 構成
 
